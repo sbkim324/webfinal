@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정육점 계산기</title>
+    <style>
+        body { margin: 20px; }
+        .container { display: flex; max-width: 1200px; margin: auto; }
+        .left, .right { flex: 1; padding: 20px; }
+        .price-table, .recipe-table { margin-top: 20px; border-collapse: collapse; width: 100%; }
+        .price-table th, .price-table td, .recipe-table th, .recipe-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        .result { margin-top: 20px; font-size: 18px; }
+        .buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .calculate-button, .reset-button { padding: 10px 20px; font-size: 16px; }
+        .food-table { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 150px; }
+        .food-item { display: flex; flex-direction: column; align-items: center; }
+        .food-item img { width: 150px; height: 200px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <h1>정육점 계산기</h1>
+
+            <h2>가격표</h2>
+            <table class="price-table">
+                <thead>
+                    <tr>
+                        <th>부위 (100g)</th>
+                        <th>가격</th>
+                        <th>부위 (100g)</th>
+                        <th>가격</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>삼겹살</td>
+                        <td>2,700원</td>
+                        <td>등심</td>
+                        <td>7,000원</td>
+                    </tr>
+                    <tr>
+                        <td>목살</td>
+                        <td>2,800원</td>
+                        <td>안심</td>
+                        <td>13,000원</td>
+                    </tr>
+                    <tr>
+                        <td>앞다리살</td>
+                        <td>1,300원</td>
+                        <td>양지</td>
+                        <td>6,000원</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>레시피표</h2>
+            <table class="recipe-table">
+                <thead>
+                    <tr>
+                        <th>요리</th>
+                        <th>재료 (1인분 기준)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>돼지김치찜</td>
+                        <td>목살 200g</td>
+                    </tr>
+                    <tr>
+                        <td>소고기미역국</td>
+                        <td>양지 50g</td>
+                    </tr>
+                    <tr>
+                        <td>안심스테이크</td>
+                        <td>안심 200g</td>
+                    </tr>
+                    <tr>
+                        <td>등심스테이크</td>
+                        <td>등심 200g</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="right">
+            <div class="food-table">
+                <div class="food-item">
+                    <img src="BeefSeaweedSoup-img.jfif">
+                    <label for="BeefSeaweedSoup">소고기미역국:</label>
+                    <input type="number" id="BeefSeaweedSoup" min="0" value="0">
+                </div>
+                <div class="food-item">
+                    <img src="PorkKimchistew-img.jpg">
+                    <label for="PorkKimchistew">돼지김치찜:</label>
+                    <input type="number" id="PorkKimchistew" min="0" value="0">
+                </div>
+                <div class="food-item">
+                    <img src="SirloinSteak-img.jpg">
+                    <label for="SirloinSteak">등심스테이크:</label>
+                    <input type="number" id="SirloinSteak" min="0" value="0">
+                </div>
+                <div class="food-item">
+                    <img src="TenderloinSteak-img.jfif">
+                    <label for="TenderloinSteak">안심스테이크:</label>
+                    <input type="number" id="TenderloinSteak" min="0" value="0">
+                </div>
+            </div>
+            <div class="buttons">
+                <button class="calculate-button" onclick="calculateTotalCost()">비용 계산</button>
+                <button class="reset-button" onclick="resetInputs()">초기화</button>
+            </div>
+            <div class="result" id="result">총 가격: 0원</div>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotalCost() {
+            const servingsBeefSeaweedSoup = parseInt(document.getElementById('BeefSeaweedSoup').value);
+            const servingsPorkKimchiStew = parseInt(document.getElementById('PorkKimchistew').value);
+            const servingsSirloinSteak = parseInt(document.getElementById('SirloinSteak').value);
+            const servingsTenderloinSteak = parseInt(document.getElementById('TenderloinSteak').value);
+
+            if (servingsBeefSeaweedSoup < 0 || servingsPorkKimchiStew < 0 || servingsSirloinSteak < 0 || servingsTenderloinSteak < 0) { 
+                alert('입력은 0 이상이어야 합니다.');
+                return;
+            }
+
+            const meatServingBeefSeaweedSoup = 50;
+            const meatServingPorkKimchiStew = 200;
+            const meatServingSirloinSteak = 200;
+            const meatServingTenderloinSteak = 200;
+
+            const price100gBeefSeaweedSoup = 6000;
+            const price100gPorkKimchiStew = 2800;
+            const price100gSirloinSteak = 7000;
+            const price100gTenderloinSteak = 13000;
+
+            const totalCostBeefSeaweedSoup = (servingsBeefSeaweedSoup * meatServingBeefSeaweedSoup / 100) * price100gBeefSeaweedSoup;
+            const totalCostPorkKimchiStew = (servingsPorkKimchiStew * meatServingPorkKimchiStew / 100) * price100gPorkKimchiStew;
+            const totalCostSirloinSteak = (servingsSirloinSteak * meatServingSirloinSteak / 100) * price100gSirloinSteak;
+            const totalCostTenderloinSteak = (servingsTenderloinSteak * meatServingTenderloinSteak / 100) * price100gTenderloinSteak;
+
+            const totalCost = totalCostBeefSeaweedSoup + totalCostPorkKimchiStew + totalCostSirloinSteak + totalCostTenderloinSteak;
+            document.getElementById('result').innerText = `총 가격: ${totalCost.toLocaleString()}원`;
+        }
+
+        function resetInputs() { 
+            document.getElementById('BeefSeaweedSoup').value = 0;
+            document.getElementById('PorkKimchistew').value = 0;
+            document.getElementById('SirloinSteak').value = 0;
+            document.getElementById('TenderloinSteak').value = 0;
+            document.getElementById('result').innerText = '총 가격: 0원';
+        }
+    </script>
+</body>
+</html>
